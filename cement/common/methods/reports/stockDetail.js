@@ -328,10 +328,10 @@ export const stockDetailReportMethod = new ValidatedMethod({
 
                             }
                         ],
-                        exchangeRingPulls: [
+                        reduceFromBills: [
                             {
                                 $match: {
-                                    $or: [{type: "exchangeRingPull"}, {type: "exchangeRillPull"}],
+                                    type: "reduce-from-bill",
                                     inventoryDate: {$gte: selector.inventoryDate.$gte, $lte: selector.inventoryDate.$lte},
                                     branchId: handleUndefined(selector.branchId),
                                     stockLocationId: handleUndefined(selector.stockLocationId),
@@ -343,14 +343,14 @@ export const stockDetailReportMethod = new ValidatedMethod({
                             },
                             {
                                 $lookup: {
-                                    from: "cement_exchangeRingPulls",
+                                    from: "cement_enterBills",
                                     localField: "refId",
                                     foreignField: "_id",
-                                    as: "exchangeRingPullDoc"
+                                    as: "billDoc"
                                 }
                             }, {
                                 $unwind: {
-                                    path: '$exchangeRingPullDoc', preserveNullAndEmptyArrays: true
+                                    path: '$billDoc', preserveNullAndEmptyArrays: true
                                 }
                             },
                             {
@@ -377,209 +377,31 @@ export const stockDetailReportMethod = new ValidatedMethod({
                             },
                             {
                                 $project: projectionField({
-                                    description: {$ifNull: ["$exchangeRingPullDescription", 'ប្តូរក្រវិលអោយអតិថិជន(Exchange Ring Pull)']},
-                                    number: {$ifNull: ['$exchangeRingPullDoc.voucherId', '$exchangeRingPullDoc._id']},
-                                    name: {$ifNull: ["$exchangeRingPullDoc.fkyou", "ក្រវិល"]},
-                                    rep: {$ifNull: ["$exchangeRingPullDoc._rep.name", ""]},
+                                    description: {$ifNull: ["$billDescription", 'កាត់ស្តុកចេញ(Stock out)']},
+                                    number: {$ifNull: ['$billDoc.voucherId', '$billDoc._id']},
+                                    name: {$ifNull: ['$billDoc._vendor.name', 'Removed Bill']},
+                                    rep: {$ifNull: ["$billDoc._rep.name", ""]},
                                     item: '$itemDoc',
-                                    opDate: '$exchangeRingPullDoc.exchangeRingPullDate'
+                                    opDate: '$billDoc.enterBillDate'
                                 })
 
                             }
+                        ],
 
-                        ],
-                        receiveBeers: [
-                            {
-                                $match: {
-                                    type: "receiveItem",
-                                    inventoryDate: {$gte: selector.inventoryDate.$gte, $lte: selector.inventoryDate.$lte},
-                                    branchId: handleUndefined(selector.branchId),
-                                    stockLocationId: handleUndefined(selector.stockLocationId),
-                                    itemId: handleUndefined(selector.itemId)
-                                }
-                            },
-                            {
-                                $group: groupLast()
-                            },
-                            {
-                                $lookup: {
-                                    from: "cement_receiveItems",
-                                    localField: "refId",
-                                    foreignField: "_id",
-                                    as: "receiveItemDoc"
-                                }
-                            }, {
-                                $unwind: {
-                                    path: '$receiveItemDoc', preserveNullAndEmptyArrays: true
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: 'cement_item',
-                                    localField: 'itemId',
-                                    foreignField: '_id',
-                                    as: 'itemDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$itemDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $lookup: {
-                                    from: 'core_branch',
-                                    localField: 'branchId',
-                                    foreignField: '_id',
-                                    as: 'branchDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$branchDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $project: projectionField({
-                                    description: {$ifNull: ["$receiveBeerDescription", 'ទទួលស្រាបៀរ(Receive Beer)']},
-                                    number: {$ifNull: ['$receiveItemDoc.voucherId', '$receiveItemDoc._id']},
-                                    name: '$receiveItemDoc._vendor.name',
-                                    rep: {$ifNull: ['$receiveItemDoc._rep.name', '']},
-                                    item: '$itemDoc',
-                                    opDate: '$receiveItemDoc.receiveItemDate'
-                                })
-                            }
-                        ],
-                        transferTo: [
-                            {
-                                $match: {
-                                    type: "transfer-to",
-                                    inventoryDate: {$gte: selector.inventoryDate.$gte, $lte: selector.inventoryDate.$lte},
-                                    branchId: handleUndefined(selector.branchId),
-                                    stockLocationId: handleUndefined(selector.stockLocationId),
-                                    itemId: handleUndefined(selector.itemId)
-                                }
-                            },
-                            {
-                                $group: groupLast()
-                            },
-                            {
-                                $lookup: {
-                                    from: "cement_locationTransfers",
-                                    localField: "refId",
-                                    foreignField: "_id",
-                                    as: "transferToDoc"
-                                }
-                            }, {
-                                $unwind: {
-                                    path: '$transferToDoc', preserveNullAndEmptyArrays: true
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: 'cement_item',
-                                    localField: 'itemId',
-                                    foreignField: '_id',
-                                    as: 'itemDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$itemDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $lookup: {
-                                    from: 'core_branch',
-                                    localField: 'branchId',
-                                    foreignField: '_id',
-                                    as: 'branchDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$branchDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $project: projectionField({
-                                    description: {$ifNull: ["$transferDescription", '']},
-                                    number: {$ifNull: ['$transferToDoc.voucherId', '$transferToDoc._id']},
-                                    name: {$concat: ["ផ្ទេរចូលមកពី", "$transferToDoc._fromBranch.khName", "(Transfer From ", "$transferToDoc._fromBranch.enName", ")"]},
-                                    rep: {$ifNull: ['$transferToDoc._rep.name', ""]},
-                                    item: '$itemDoc',
-                                    opDate: '$transferToDoc.locationTransferDate'
-                                })
-                            }
-                        ],
-                        transferFrom: [
-                            {
-                                $match: {
-                                    type: "transfer-from",
-                                    inventoryDate: {$gte: selector.inventoryDate.$gte, $lte: selector.inventoryDate.$lte},
-                                    branchId: handleUndefined(selector.branchId),
-                                    stockLocationId: handleUndefined(selector.stockLocationId),
-                                    itemId: handleUndefined(selector.itemId)
-                                }
-                            },
-                            {
-                                $group: groupLast()
-                            },
-                            {
-                                $lookup: {
-                                    from: "cement_locationTransfers",
-                                    localField: "refId",
-                                    foreignField: "_id",
-                                    as: "transferFromDoc"
-                                }
-                            }, {
-                                $unwind: {
-                                    path: '$transferFromDoc', preserveNullAndEmptyArrays: true
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    from: 'cement_item',
-                                    localField: 'itemId',
-                                    foreignField: '_id',
-                                    as: 'itemDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$itemDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $lookup: {
-                                    from: 'core_branch',
-                                    localField: 'branchId',
-                                    foreignField: '_id',
-                                    as: 'branchDoc'
-                                }
-                            },
-                            {
-                                $unwind: {path: '$branchDoc', preserveNullAndEmptyArrays: true}
-                            },
-                            {
-                                $project: projectionField({
-                                    description: {$ifNull: ["$transferDescription", '']},
-                                    number: {$ifNull: ['$transferFromDoc.voucherId', '$transferFromDoc._id']},
-                                    name: {$concat: ["ផ្ទេរចេញទៅ", "$transferFromDoc._toBranch.khName", "(Transfer To", "$transferFromDoc._toBranch.enName", ")"]},
-                                    rep: {$ifNull: ["$transferFromDoc._rep.name", ""]},
-                                    item: '$itemDoc',
-                                    opDate: '$transferFromDoc.locationTransferDate'
-
-                                })
-                            }
-                        ]
                     },
 
                 }
             ]);
+            console.log(inventoryDocs[0].bills)
             if (inventoryDocs[0].stockDate.length > 0) {
                 inventoryDocs[0].stockDate.forEach(function (obj) {
-                    var currentStockDate = moment(obj.inventoryDate).format('YYYY-MM-DD');
+                    let currentStockDate = moment(obj.inventoryDate).format('YYYY-MM-DD');
                     inventoryDocs[0].bills.forEach(function (bill) {
                         if (moment(currentStockDate).isSame(moment(bill.inventoryDate).format('YYYY-MM-DD'))) {
                             obj.items.push(bill);
                         }
                     });
-                    inventoryDocs[0].receiveBeers.forEach(function (receiveBeer) {
-                        if (moment(currentStockDate).isSame(moment(receiveBeer.inventoryDate).format('YYYY-MM-DD'))) {
-                            obj.items.push(receiveBeer);
-                        }
-                    });
+
                     inventoryDocs[0].invoices.forEach(function (invoice) {
                         if (moment(currentStockDate).isSame(moment(invoice.inventoryDate).format('YYYY-MM-DD'))) {
                             obj.items.push(invoice);
@@ -595,19 +417,9 @@ export const stockDetailReportMethod = new ValidatedMethod({
                             obj.items.push(invoiceBill);
                         }
                     });
-                    inventoryDocs[0].exchangeRingPulls.forEach(function (exchangeRingPull) {
-                        if (moment(currentStockDate).isSame(moment(exchangeRingPull.inventoryDate).format('YYYY-MM-DD'))) {
-                            obj.items.push(exchangeRingPull);
-                        }
-                    });
-                    inventoryDocs[0].transferTo.forEach(function (transfer) {
-                        if (moment(currentStockDate).isSame(moment(transfer.inventoryDate).format('YYYY-MM-DD'))) {
-                            obj.items.push(transfer);
-                        }
-                    });
-                    inventoryDocs[0].transferFrom.forEach(function (transfer) {
-                        if (moment(currentStockDate).isSame(moment(transfer.inventoryDate).format('YYYY-MM-DD'))) {
-                            obj.items.push(transfer);
+                    inventoryDocs[0].reduceFromBills.forEach(function (invoiceBill) {
+                        if (moment(currentStockDate).isSame(moment(invoiceBill.inventoryDate).format('YYYY-MM-DD'))) {
+                            obj.items.push(invoiceBill);
                         }
                     });
                 });

@@ -11,7 +11,7 @@ module.exports = {
 
  meteor: {
    name: 'Cement',
-   path: '../cement',
+   path: '../cement-ls',
    servers: {
      one: {}
    },
