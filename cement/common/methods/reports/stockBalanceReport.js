@@ -217,7 +217,7 @@ export const stockBalanceReport = new ValidatedMethod({
                                     qty:1 ,
                                     amount: 1,
                                     tsFee: 1,
-                                    price: {$divide: ["$amount", "$qty"]},
+                                    price: {$divide: ["$amountCost", "$qty"]},
                                     amountCost: 1
                                 }
                             },
