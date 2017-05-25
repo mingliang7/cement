@@ -318,7 +318,7 @@ export const stockDetailReportMethod = new ValidatedMethod({
                             },
                             {
                                 $project: projectionField({
-                                    description: {$ifNull: ["$billDescription", 'ទិញចូល(Purchase)']},
+                                    description: {$ifNull: ["$billDescription", 'កាត់ស្តុកសម្រាប់ INV(Stock out)']},
                                     number: {$ifNull: ['$billDoc.voucherId', '$billDoc._id']},
                                     name: {$ifNull: ['$billDoc._vendor.name', 'Removed Invoice-Bill']},
                                     rep: {$ifNull: ["$billDoc._rep.name", ""]},
@@ -392,7 +392,7 @@ export const stockDetailReportMethod = new ValidatedMethod({
 
                 }
             ]);
-            console.log(inventoryDocs[0].bills)
+            console.log(inventoryDocs[0])
             if (inventoryDocs[0].stockDate.length > 0) {
                 inventoryDocs[0].stockDate.forEach(function (obj) {
                     let currentStockDate = moment(obj.inventoryDate).format('YYYY-MM-DD');
@@ -423,7 +423,7 @@ export const stockDetailReportMethod = new ValidatedMethod({
                         }
                     });
                 });
-                inventoryDocs[0].stockDate.sort(compare);
+                inventoryDocs[0].stockDate.sort(compareStockDate);
                 for (let i = 0; i < inventoryDocs[0].stockDate.length; i++) {
                     inventoryDocs[0].stockDate[i].items.sort(compare);
                 }
@@ -481,6 +481,7 @@ function projectionField({item, description, name, number, rep, opDate}) {
         description: description,
         name: name,
         item: item,
+        createdAt: 1,
         opDate: opDate,
     }
 }
@@ -499,6 +500,7 @@ function groupLast() {
         type: {$last: '$type'},
         coefficient: {$last: '$coefficient'},
         refId: {$last: '$refId'},
+        createdAt: {$last: '$createdAt'},
         inventoryDate: {$last: '$inventoryDate'},
     }
 }
@@ -509,6 +511,13 @@ function handleUndefined(value) {
     return value
 }
 function compare(a, b) {
+    if (a.createdAt < b.createdAt)
+        return -1;
+    if (a.createdAt > b.createdAt)
+        return 1;
+    return 0;
+}
+function compareStockDate(a, b) {
     if (a.inventoryDate < b.inventoryDate)
         return -1;
     if (a.inventoryDate > b.inventoryDate)

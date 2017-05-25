@@ -90,7 +90,8 @@
         <table class="table table-striped">
             <thead class="rpt-header">
             <tr>
-                <th>Date</th>
+                <th>Stock-Date</th>
+                <th>Ops-Date</th>
                 <th>N៖</th>
                 <th>Name</th>
                 <th>Representative</th>
@@ -110,6 +111,7 @@
                     {{#each items}}
                         {{#unless number}}
                             <tr>
+                                <td><del>{{moFormat inventoryDate 'DD/MM/YYYY'}}</del></td>
                                 <td><del>{{moFormat opDate 'DD/MM/YYYY'}}</del></td>
                                 <td><del>{{concat number}}</del></td>
                                 <td><del>{{name}}</del></td>
@@ -124,6 +126,7 @@
                             </tr>
                         {{else}}
                             <tr>
+                                <td>{{moFormat inventoryDate 'DD/MM/YYYY'}}</td>
                                 <td>{{moFormat opDate 'DD/MM/YYYY'}}</td>
                                 <td>{{concat number}}</td>
                                 <td>{{name}}</td>
