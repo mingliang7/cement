@@ -1117,7 +1117,7 @@ function reduceGratisInventory(item, branchId, stockLocationId) {
 Meteor.methods({
     insertAccountInvoice(){
         let i = 1;
-        let invoices = Invoices.find({});
+        let invoices = Invoices.find({refBillId:{$ne:'000'}});
         invoices.forEach(function (doc) {
             console.log(i++);
             let des = "វិក្កយបត្រ អតិថិជនៈ ";

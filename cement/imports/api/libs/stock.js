@@ -5,6 +5,7 @@ import {GratisInventories} from '../collections/gratisInventory'
 
 export  default class StockFunction {
     static averageInventoryInsert(branchId, item, stockLocationId, type, refId,inventoryDate) {
+        inventoryDate=moment(inventoryDate).startOf('days').toDate();
         let lastPurchasePrice = 0;
         let remainQuantity = 0;
         let prefix = stockLocationId + '-';
@@ -67,6 +68,7 @@ export  default class StockFunction {
     }
 
     static averageInventoryInsertForBill(branchId, item, stockLocationId, type, refId, inventoryDate) {
+        inventoryDate=moment(inventoryDate).startOf('days').toDate();
         let id = '';
         //let lastPurchasePrice = 0;
         let remainQuantity = 0;
@@ -131,6 +133,7 @@ export  default class StockFunction {
     }
 
     static minusAverageInventoryInsertForBill(branchId, item, stockLocationId, type, refId,inventoryDate) {
+        inventoryDate=moment(inventoryDate).startOf('days').toDate();
         let id = '';
         let prefix = stockLocationId + '-';
         let inventory = AverageInventories.findOne({
@@ -163,6 +166,9 @@ export  default class StockFunction {
                 inventoryDate:inventoryDate
             };
             id = AverageInventories.insert(newInventory);
+            let setModifier = {$set: {}};
+            setModifier.$set['qtyOnHand.' + stockLocationId] = totalQty;
+            Item.direct.update(item.itemId, setModifier);
         }
         else {
             throw new Meteor.Error('Not Found Inventory. @' + type + " refId:" + refId);
@@ -171,6 +177,7 @@ export  default class StockFunction {
     }
 
     static minusAverageInventoryInsert(branchId, item, stockLocationId, type, refId,inventoryDate) {
+        inventoryDate=moment(inventoryDate).startOf('days').toDate();
         let id = '';
         let prefix = stockLocationId + '-';
         let inventory = AverageInventories.findOne({
@@ -230,6 +237,7 @@ export  default class StockFunction {
     }
 
     static minusAverageInventoryInsertAndReturnCostPrice(branchId, item, stockLocationId, type, refId, inventoryDate) {
+        inventoryDate=moment(inventoryDate).startOf('days').toDate();
         let cost = 0;
         let prefix = stockLocationId + '-';
         let inventory = AverageInventories.findOne({
@@ -527,5 +535,16 @@ export  default class StockFunction {
             }
         });
         return result;
+    }
+    static getLastInventoryDate(branchId, stockLocationId) {
+        let inventory = AverageInventories.findOne({
+            branchId: branchId,
+            stockLocationId: stockLocationId,
+        }, {sort: {_id: -1}});
+        if (inventory && inventory.inventoryDate) {
+            return inventory.inventoryDate;
+        } else {
+            return moment('0001-01-01').toDate();
+        }
     }
 }

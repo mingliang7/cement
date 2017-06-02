@@ -4,7 +4,8 @@ Tracker.autorun(function () {
         let sub = Meteor.subscribe(`cement.${query.get('type')}`, {
             vendorId: FlowRouter.query.get('vendorId'),
             customerId: FlowRouter.query.get('customerId'),
-            status: {$in: ['active', 'partial', 'closed']}
+            status: {$in: ['active', 'partial', 'closed']},
+            branchId:Session.get('currentBranch')
         });
         if (!sub.ready()) {
             swal({
