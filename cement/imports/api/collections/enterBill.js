@@ -43,14 +43,26 @@ EnterBills.itemsSchema = new SimpleSchema({
             }
         }
     },
-    isBill:{
-        type:Boolean,
-        optional:true
+    isBill: {
+        type: Boolean,
+        optional: true
     }
 });
 
 // EnterBills schema
 EnterBills.schema = new SimpleSchema({
+    deliveryDate: {
+        type: Date,
+        autoform: {
+            afFieldInput: {
+                type: "bootstrap-datetimepicker",
+                dateTimePickerOptions: {
+                    format: 'DD/MM/YYYY',
+
+                }
+            }
+        }
+    },
     invoiceId: {
         type: [String],
         optional: true,
@@ -216,12 +228,12 @@ EnterBills.schema = new SimpleSchema({
     totalUnBill: {
         type: Number,
         decimal: true,
-        optional:true
+        optional: true
     },
     grandTotal: {
         type: Number,
         decimal: true,
-        optional:true
+        optional: true
     },
     branchId: {
         type: String

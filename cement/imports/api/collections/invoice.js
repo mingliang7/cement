@@ -81,9 +81,9 @@ Invoices.schema = new SimpleSchema({
         type: String,
         optional: true
     },
-    refBillDate:{
-        type:Date,
-        optional:true
+    refBillDate: {
+        type: Date,
+        optional: true
     },
     profit: {
         type: Number,
@@ -98,6 +98,17 @@ Invoices.schema = new SimpleSchema({
     voucherId: {
         type: String,
         optional: true
+    },
+    deliveryDate: {
+        type: Date,
+        autoform: {
+            afFieldInput: {
+                type: "bootstrap-datetimepicker",
+                dateTimePickerOptions: {
+                    format: 'DD/MM/YYYY',
+                }
+            }
+        }
     },
     invoiceDate: {
         type: Date,

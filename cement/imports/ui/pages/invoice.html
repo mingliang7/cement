@@ -66,39 +66,44 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-2">
+                    {{> afQuickField name="invoiceDate"}}
+                </div>
+                <div class="col-md-2">
+                    {{> afQuickField name="deliveryDate"}}
+                </div>
+                <div class="col-md-2">
+                        {{> afQuickField name="dueDate" value=dueDate}}
+                </div>
+            </div>
             <hr>
             <div class="row">
-                <div class="col-xs-1">
+                <div class="col-xs-2">
+                    {{> afQuickField name="stockLocationId" value=stockLocation resetOnSuccess=false}}
+                    {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
+                </div>
+                <div class="col-xs-2">
                     {{> afQuickField name="voucherId"}}
                 </div>
-                <div class="col-xs-1">
+                <div class="col-xs-2">
                     {{> afQuickField name="boid" label="DO"}}
                 </div>
 
                 <div class="col-xs-2">
                     {{> afQuickField name="truckId" label="Truck"}}
                 </div>
-                {{#if isTerm}}
-                    <div class="col-xs-1">
-                        {{> afQuickField name="termId" options=termOption value=termId}}
-                    </div>
-                {{/if}}
-                <div class="col-xs-1">
-                    {{> afQuickField name="invoiceDate"}}
-                </div>
-                <div class="col-xs-1">
-                    {{> afQuickField name="dueDate" value=dueDate}}
-                </div>
-                <div class="col-xs-2">
-                    {{> afQuickField name="stockLocationId" value=stockLocation resetOnSuccess=false}}
-                    {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
-                </div>
+
+
                 <div class="col-xs-2">
                     {{> afQuickField name="repId" options=options value=repId label="Rep"}}
                 </div>
-
+                {{#if isTerm}}
+                    <div class="col-xs-2">
+                        {{> afQuickField name="termId" options=termOption value=termId}}
+                    </div>
+                {{/if}}
             </div>
-
             <div class="col-md-12 well">
                 <!--Item Temporary-->
                 {{> Cement_invoiceItems itemsCollection=itemsCollection}}
@@ -198,30 +203,35 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-xs-1">
+                <div class="col-xs-2">
+                    {{> afQuickField name="invoiceDate" value=invoiceDate}}
+                </div>
+                <div class="col-xs-2">
+                    {{> afQuickField name="deliveryDate"}}
+                </div>
+                <div class="col-xs-2">
+                    {{> afQuickField name="dueDate" value=dueDate}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    {{> afQuickField name="stockLocationId" value=stockLocation resetOnSuccess=false}}
+                    {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
+                </div>
+                <div class="col-xs-2">
                     {{> afQuickField name="voucherId"}}
                 </div>
-                <div class="col-xs-1">
+                <div class="col-xs-2">
                     {{> afQuickField name="boid" label="DO"}}
                 </div>
                 <div class="col-xs-2">
                     {{> afQuickField name="truckId" label="Truck"}}
                 </div>
                 {{#if isTerm}}
-                    <div class="col-xs-1">
+                    <div class="col-xs-2">
                         {{> afQuickField name="termId" options=termOption value=termId}}
                     </div>
                 {{/if}}
-                <div class="col-xs-1">
-                    {{> afQuickField name="invoiceDate" value=invoiceDate}}
-                </div>
-                <div class="col-xs-1">
-                    {{> afQuickField name="dueDate" value=dueDate}}
-                </div>
-                <div class="col-xs-2">
-                    {{> afQuickField name="stockLocationId" value=stockLocation resetOnSuccess=false}}
-                    {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
-                </div>
                 <div class="col-xs-2">
                     {{> afQuickField name="repId" options=options value=repId label="Rep"}}
                 </div>

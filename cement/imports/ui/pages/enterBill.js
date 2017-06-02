@@ -363,6 +363,9 @@ editTmpl.helpers({
     collection(){
         return EnterBills;
     },
+    date(){
+      return this.enterBillDate;
+    },
     data () {
         let data = this;
         // Add items to local collection

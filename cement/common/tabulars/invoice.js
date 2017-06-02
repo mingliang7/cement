@@ -27,12 +27,18 @@ tabularOpts.columns = [
         }
     },
     {data: "voucherId", title: "Voucher"},
-    {data: "boid", title: "D"},
+    {data: "boid", title: "DO"},
     {
         data: "invoiceDate",
         title: "Date",
         render: function (val, type, doc) {
             return moment(val).format('DD/MM/YY');
+        }
+    }, {
+        data: "deliveryDate",
+        title: "Delivery Date",
+        render: function (val) {
+            return val ? moment(val).format('DD/MM/YY') : '';
         }
     },
     {

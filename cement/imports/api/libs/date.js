@@ -50,4 +50,8 @@ export default class RangeDate {
         let closing = Closing.findOne({});
         elm.data("DateTimePicker").minDate(closing ? moment(closing.closingDate).toDate() : false)
     }
+    static setMin(elm, date){
+        elm.data("DateTimePicker") && elm.data("DateTimePicker").minDate(date ? moment(date).toDate() : false)
+
+    }
 };

@@ -48,9 +48,6 @@
                     </p>
                 </div>
                 <div class="row">
-                    {{>Cement_invoiceBill}}
-                </div>
-                <div class="row">
                     <div class="col-md-12">
                         {{#with vendorInfo}}
                             <ul class="list-inline">
@@ -61,30 +58,38 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                {{>Cement_invoiceBill}}
+            </div>
             <hr>
-
-            <div class="col-md-2">
-                {{> afQuickField name="voucherId"}}
-            </div>
-            {{#if isTerm}}
+            <div class="row">
                 <div class="col-md-2">
-                    {{> afQuickField name="termId" options=termOption value=termId}}
+                    {{> afQuickField name="stockLocationId"}}
+                    {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
                 </div>
-            {{/if}}
-            <div class="col-md-2">
-                {{> afQuickField name="enterBillDate"}}
+                <div class="col-md-1">
+                    {{> afQuickField name="voucherId"}}
+                </div>
+                <div class="col-md-2">
+                    {{> afQuickField name="enterBillDate"}}
+                </div>
+                <div class="col-md-2">
+                    {{> afQuickField name="deliveryDate"}}
+                </div>
+                <div class="col-md-2">
+                    {{> afQuickField name="dueDate" value=dueDate}}
+                </div>
+                {{#if isTerm}}
+                    <div class="col-md-1">
+                        {{> afQuickField name="termId" options=termOption value=termId}}
+                    </div>
+                {{/if}}
+
+                <div class="col-md-2">
+                    {{> afQuickField name="repId" options=options value=repId label="Rep"}}
+                </div>
+                {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
             </div>
-            <div class="col-md-2">
-                {{> afQuickField name="dueDate" value=dueDate}}
-            </div>
-            <div class="col-md-2">
-                {{> afQuickField name="stockLocationId"}}
-                <!--{{> afQuickField type="hidden" name="branchId" value=currentBranch}}-->
-            </div>
-            <div class="col-md-2">
-                {{> afQuickField name="repId" options=options value=repId label="Rep"}}
-            </div>
-            {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
             <div class="col-md-12">
                 <!--Item Temporary-->
                 {{> Cement_enterBillItems itemsCollection=itemsCollection}}
@@ -113,80 +118,85 @@
 <!--Update-->
 <template name="Cement_enterBillEdit">
     <div class="box-body">
-            {{#autoForm collection=collection id="Cement_enterBillEdit" doc=data type="update"}}
-                <div class="row" style="background: rgb(227, 234, 243); padding: 10px; margin: 0;">
-                    <div class="col-md-3 hidden">
-                        <label for="email">Vendor:<span style="color: red;">*</span> </label>
-                        {{> afQuickField name="vendorId" label=false}}
-                    </div>
-                    <div class="col-md-3">
-                        <label for="">Vendor:</label>
-                        <input type="text" readonly="true" value="{{vendorId}} | {{_vendor.name}}" class="form-control">
-                    </div>
-                    <div class="col-md-9">
-                        <p class="pull-right ">
-                        <h4 class="text-black">BALANCE DUE</h4>
-                        <h2 class="text-blue text-center">${{numFormat  totalOrder.total '0,0.00'}}</h2>
-                        {{#if totalOrder.vendorId}}
-                            <a class="btn btn-default text-center go-to-pay-bill"
-                               href="/cement/vendor/{{totalOrder.vendorId}}/payBill/{{totalOrder.billId}}">
-                                Pay Bill
-                            </a>
-                        {{/if}}
-                        </p>
-                    </div>
-                </div>
-                <hr>
-                <div class="col-md-2">
-                    {{> afQuickField name="voucherId"}}
-                </div>
-                {{#if isTerm}}
-                    <div class="col-md-2">
-                        {{> afQuickField name="termId" options=termOption value=termId}}
-                    </div>
-                {{/if}}
-                <div class="col-md-2">
-                    {{> afQuickField name="enterBillDate"}}
-                </div>
-                <div class="col-md-2">
-                    {{> afQuickField name="dueDate" value=dueDate}}
-                </div>
-                <div class="col-md-2">
-                    {{> afQuickField name="stockLocationId"}}
-                    <!--{{> afQuickField type="hidden" name="branchId" value=currentBranch}}-->
-                </div>
-                <div class="col-md-2">
-                    {{> afQuickField name="repId" options=options value=repId label="Rep"}}
-                </div>
-                {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
-                <div class="col-md-12">
-                    <!--Item Temporary-->
-                    {{> Cement_enterBillItems itemsCollection=itemsCollection}}
-                    <div class="row">
-                        <div class="col-sm-12 pull-right">
-                            <!--{{> formFooterWithButton}}-->
-
-                            {{#formFooter}}
-                                <button type="submit" class="btn btn-success" id="btn-pay" {{disabledSubmitBtn}}>
-                                    <i class="fa fa-money"></i> {{_ "cement.custom.pay"}}
-                                </button>
-                                <button type="submit" class="btn btn-warning" id="btn-save-print" {{disabledSubmitBtn}}>
-                                    <i class="fa fa-print"></i> {{_ "cement.custom.saveAndPrint"}}
-                                </button>
-                                <button type="submit" class="btn btn-primary" id="btn-save" {{disabledSubmitBtn}}>
-                                    <i class="fa fa-floppy-o"></i> {{_ "form.btnSave"}}
-                                </button>
-                                <button type="reset" class="btn btn-default">
-                                    <i class="fa fa-refresh"></i> {{_ "form.btnReset"}}
-                                </button>
-                            {{/formFooter}}
-                        </div>
-                    </div>
+        {{#autoForm collection=collection id="Cement_enterBillEdit" doc=data type="update"}}
+            <div class="row" style="background: rgb(227, 234, 243); padding: 10px; margin: 0;">
+                <div class="col-md-3 hidden">
+                    <label for="email">Vendor:<span style="color: red;">*</span> </label>
+                    {{> afQuickField name="vendorId" label=false}}
                 </div>
                 <div class="col-md-3">
-                    {{> afQuickField name="des"}}
+                    <label for="">Vendor:</label>
+                    <input type="text" readonly="true" value="{{vendorId}} | {{_vendor.name}}" class="form-control">
                 </div>
-            {{/autoForm}}
+                <div class="col-md-9">
+                    <p class="pull-right ">
+                    <h4 class="text-black">BALANCE DUE</h4>
+                    <h2 class="text-blue text-center">${{numFormat  totalOrder.total '0,0.00'}}</h2>
+                    {{#if totalOrder.vendorId}}
+                        <a class="btn btn-default text-center go-to-pay-bill"
+                           href="/cement/vendor/{{totalOrder.vendorId}}/payBill/{{totalOrder.billId}}">
+                            Pay Bill
+                        </a>
+                    {{/if}}
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-2">
+                {{> afQuickField name="stockLocationId"}}
+                <!--{{> afQuickField type="hidden" name="branchId" value=currentBranch}}-->
+            </div>
+            <div class="col-md-2">
+                {{> afQuickField name="enterBillDate" value=date}}
+            </div>
+            <div class="col-md-2">
+                {{> afQuickField name="deliveryDate"}}
+            </div>
+            <div class="col-md-2">
+                {{> afQuickField name="dueDate" value=dueDate}}
+            </div>
+            <div class="col-md-1">
+                {{> afQuickField name="voucherId"}}
+            </div>
+            {{#if isTerm}}
+                <div class="col-md-1">
+                    {{> afQuickField name="termId" options=termOption value=termId}}
+                </div>
+            {{/if}}
+
+
+            <div class="col-md-2">
+                {{> afQuickField name="repId" options=options value=repId label="Rep"}}
+            </div>
+            {{> afQuickField type="hidden" name="branchId" value=currentBranch}}
+            <div class="col-md-12">
+                <!--Item Temporary-->
+                {{> Cement_enterBillItems itemsCollection=itemsCollection}}
+                <div class="row">
+                    <div class="col-sm-12 pull-right">
+                        <!--{{> formFooterWithButton}}-->
+
+                        {{#formFooter}}
+                            <button type="submit" class="btn btn-success" id="btn-pay" {{disabledSubmitBtn}}>
+                                <i class="fa fa-money"></i> {{_ "cement.custom.pay"}}
+                            </button>
+                            <button type="submit" class="btn btn-warning" id="btn-save-print" {{disabledSubmitBtn}}>
+                                <i class="fa fa-print"></i> {{_ "cement.custom.saveAndPrint"}}
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="btn-save" {{disabledSubmitBtn}}>
+                                <i class="fa fa-floppy-o"></i> {{_ "form.btnSave"}}
+                            </button>
+                            <button type="reset" class="btn btn-default">
+                                <i class="fa fa-refresh"></i> {{_ "form.btnReset"}}
+                            </button>
+                        {{/formFooter}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                {{> afQuickField name="des"}}
+            </div>
+        {{/autoForm}}
     </div>
 </template>
 
@@ -337,6 +347,7 @@
     </div>
     <div class="col-md-4">
         <br>
+        <label for=""></label>
         <label for=""></label>
         <a class="addInvoiceId btn btn-sm btn-primary"><i class="fa fa-plus"></i> Add</a>
         <a class="btn btn-sm btn-default previewInvoiceItem"><i class="fa fa-search" aria-hidden="true"></i>

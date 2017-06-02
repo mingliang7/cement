@@ -56,6 +56,18 @@ Tracker.autorun(function () {
     if (Session.get('saleOrderItems')) {
         Meteor.subscribe('cement.item', {_id: {$in: Session.get('saleOrderItems')}});
     }
+    let saleIdQuery = FlowRouter.query.get('saleId');
+    if (saleIdQuery) {
+        Meteor.call('checkLastDateOfReceiveOrder', {saleId: saleIdQuery}, (err, result) => {
+            if (!err) {
+                if (result && result.invoiceDate) {
+                    Meteor.setTimeout(function () {
+                        RangeDate.setMin($('[name="invoiceDate"]'), result.invoiceDate);
+                    }, 1000);
+                }
+            }
+        });
+    }
 });
 
 // Declare template
@@ -131,6 +143,9 @@ indexTmpl.events({
                 }
             }
         });
+        if (this.saleId) {
+            FlowRouter.query.set({saleId: this.saleId});
+        }
     },
     'click .js-destroy'(event, instance) {
         let data = this;
@@ -189,10 +204,12 @@ newTmpl.onCreated(function () {
         this.repOptions.set(result);
     });
     this.description = new ReactiveVar('');
+
     this.autorun(() => {
         if (FlowRouter.query.get('des')) {
             this.description.set(FlowRouter.query.get('des'));
-        } else {
+        }
+        else {
             this.description.set('');
         }
     });
@@ -260,19 +277,19 @@ newTmpl.helpers({
         let instance = Template.instance();
         return instance.description.get();
     },
-    stockLocation() {
-        try {
-            let stockLocationAndAccountMapping = Session.get('currentUserStockAndAccountMappingDoc');
-            if (stockLocationAndAccountMapping) {
-                if (stockLocationAndAccountMapping.stockLocations.length > 0) {
-                    return stockLocationAndAccountMapping.stockLocations[0];
-                }
-            }
-            return false;
-        } catch (e) {
-        }
-
-    },
+    // stockLocation() {
+    //     try {
+    //         let stockLocationAndAccountMapping = Session.get('currentUserStockAndAccountMappingDoc');
+    //         if (stockLocationAndAccountMapping) {
+    //             if (stockLocationAndAccountMapping.stockLocations.length > 0) {
+    //                 return stockLocationAndAccountMapping.stockLocations[0];
+    //             }
+    //         }
+    //         return false;
+    //     } catch (e) {
+    //     }
+    //
+    // },
     repId() {
         try {
             let {customerInfo} = Session.get('customerInfo');
@@ -472,8 +489,8 @@ editTmpl.events({
 });
 editTmpl.helpers({
     invoiceData(){
-      let instance = Template.instance();
-      return instance.invoiceDate.get();
+        let instance = Template.instance();
+        return instance.invoiceDate.get();
     },
     description(){
         let instance = Template.instance();
@@ -594,7 +611,7 @@ editTmpl.helpers({
     },
     dueDate() {
         try {
-            let date =  dateState.get() || AutoForm.getFieldValue('invoiceDate');
+            let date = dateState.get() || AutoForm.getFieldValue('invoiceDate');
             let {customerInfo} = Session.get('customerInfo');
             if (customerInfo) {
                 if (customerInfo._term) {
@@ -721,6 +738,7 @@ listSaleOrder.events({
         let tmpCollection = itemsCollection.find().fetch();
         if (remainQty != '' && remainQty != '0') {
             if (this.remainQty > 0) {
+                FlowRouter.query.set({saleId: saleId})
                 if (tmpCollection.length > 0) {
                     let saleIdExist = _.find(tmpCollection, function (o) {
                         return o.saleId == saleId;
@@ -758,6 +776,7 @@ listSaleOrder.events({
         let tmpCollection = itemsCollection.find().fetch();
         if (remainQty != '' && remainQty != '0') {
             if (this.remainQty > 0) {
+                FlowRouter.query.set({saleId: saleId})
                 if (parseFloat(remainQty) > this.remainQty) {
                     remainQty = this.remainQty;
                     $(event.currentTarget).val(this.remainQty);
@@ -896,6 +915,9 @@ function dpChange(elem) {
     elem.on('dp.change', function (e) {
         dateState.set(e.date && e.date.toDate());
     });
+}
+function setMinDate(elem) {
+
 }
 AutoForm.addHooks([
     'Cement_invoiceNew',

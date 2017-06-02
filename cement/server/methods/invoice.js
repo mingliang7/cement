@@ -101,5 +101,8 @@ Meteor.methods({
             return {items: invoices[0].items, total: invoices[0].total};
         }
         return {items: [], total: 0};
+    },
+    checkLastDateOfReceiveOrder({saleId}){
+        return  Invoices.findOne({saleId}, {sort: {invoiceDate: -1}})
     }
 });

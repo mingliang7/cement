@@ -477,6 +477,9 @@ itemsTmpl.events({
             UnitConvertClass.removeConvertItem(item, instance, itemsCollection);
         }
 
+        if (itemsCollection.find().count() == 0) {
+            FlowRouter.query.set({saleId: null});
+        }
     },
     'change .item-qty'(event, instance) {
         let currentQty = event.currentTarget.value;
