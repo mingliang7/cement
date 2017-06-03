@@ -30,6 +30,13 @@ tabularOpts.columns = [
             return moment(val).format('DD/MM/YYYY');
         }
     },
+    {
+        data: "deliveryDate",
+        title: "Delivery Date",
+        render: function (val) {
+            return val ? moment(val).format('DD/MM/YYYY') : '';
+        }
+    },
     {data: "total", title: "Total"},
     {
         data: "vendorId",
@@ -57,5 +64,5 @@ tabularOpts.columns = [
     //    }
     //}
 ];
-tabularOpts.extraFields = ['items', 'dueDate', 'stockLocationId', 'repId', 'voucherId', 'type', 'prepaidOrderId', 'companyExchangeRingPullId','lendingStockId','exchangeGratisId', 'purchaseOrderId'];
+tabularOpts.extraFields = ['_vendor','items', 'dueDate', 'stockLocationId', 'repId', 'voucherId', 'type', 'prepaidOrderId', 'companyExchangeRingPullId', 'lendingStockId', 'exchangeGratisId', 'purchaseOrderId'];
 export const ReceiveItemTabular = new Tabular.Table(tabularOpts);

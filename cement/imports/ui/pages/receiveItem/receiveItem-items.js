@@ -85,7 +85,8 @@ itemsTmpl.helpers({
             key: 'qty',
             label: __(`${i18nPrefix}.qty.label`),
             fn(value, obj, key){
-                return FlowRouter.query.get('vendorId') ? value : Spacebars.SafeString(`<input type="text" value=${value} class="item-qty">`);
+                // return FlowRouter.query.get('vendorId') ? value : Spacebars.SafeString(`<input type="text" value=${value} class="item-qty">`);
+                return value;
             }
         }, {
             key: 'lostQty',
@@ -229,7 +230,6 @@ itemsTmpl.events({
     'click .js-destroy-item': function (event, instance) {
         event.preventDefault();
         let itemDoc = this;
-        console.log('fuck you bitch swal');
         if (AutoForm.getFormId() == "Cement_receiveItemEdit") { //check if update form
             swal({
                 title: "Are you sure?",
@@ -247,14 +247,13 @@ itemsTmpl.events({
                     swal.close();
                 });
         } else {
-            destroyAction(
-                itemsCollection, {
-                    _id: this._id
-                }, {
-                    title: TAPi18n.__('cement.receiveItem.schema.itemId.label'),
-                    itemTitle: this.itemId
-                }
-            );
+            itemsCollection.remove({
+                _id: this._id
+            })
+        }
+        if (itemsCollection.find({}).count() <= 0) {
+            console.log('Destroy')
+            FlowRouter.query.set({purchaseOrderId: null, ref: null});
         }
 
     },

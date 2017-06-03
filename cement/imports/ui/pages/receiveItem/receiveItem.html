@@ -83,6 +83,9 @@
                 {{> afQuickField name="receiveItemDate"}}
             </div>
             <div class="col-md-2">
+                {{> afQuickField name="deliveryDate"}}
+            </div>
+            <div class="col-md-2">
                 {{> afQuickField name="dueDate" value=dueDate}}
             </div>
             <div class="col-md-2">
@@ -124,21 +127,26 @@
         {{#if Template.subscriptionsReady}}
             {{#autoForm collection=collection id="Cement_receiveItemEdit" doc=data type="update"}}
                 <div class="row" style="background: rgb(227, 234, 243); padding: 10px; margin: 0;">
-                    <div class="col-md-3">
-                        <label for="email">Vendor:<span style="color: red;">*</span> </label>
+                    <div class="hidden">
+                        <label for="email">Vendor:<span style="color: red;">*</span> (<a href="" class="add-new-customer">Add
+                            New</a>) </label>
                         {{> afQuickField name="vendorId" label=false}}
+                    </div>
+                    <div class="col-md-3">
+                        <label for="">Vendor:</label>
+                        <input type="text" readonly="true" value="{{vendorId}} | {{_vendor.name}}" class="form-control">
                     </div>
 
                     <div class="col-md-3">
-                        <br>
-                            <!--{{#if isPrepaidOrder}}-->
+
+                            <!--&lt;!&ndash;{{#if isPrepaidOrder}}&ndash;&gt;-->
                         <input type="text" value="{{type}}" class="hidden" id="receive-type">
-                        <span> <a href="" class="toggle-list btn btn-default">
-                                <label class="receive-type-label">{{type}}</label> <i class="fa fa-list "
-                                                                                      aria-hidden="true"></i>
-                            </a>
-                            </span>
-                            <!--{{/if}}-->
+                        <!--<span> <a href="" class="toggle-list btn btn-default">-->
+                                <!--<label class="receive-type-label">{{type}}</label> <i class="fa fa-list "-->
+                                                                                      <!--aria-hidden="true"></i>-->
+                            <!--</a>-->
+                            <!--</span>-->
+                            <!--&lt;!&ndash;{{/if}}&ndash;&gt;-->
                     </div>
 
                     <div class="col-md-9">
@@ -165,6 +173,9 @@
                 {{/if}}-->
                 <div class="col-md-2">
                     {{> afQuickField name="receiveItemDate"}}
+                </div>
+                <div class="col-md-2">
+                    {{> afQuickField name="deliveryDate"}}
                 </div>
                 <div class="col-md-2">
                     {{> afQuickField name="dueDate" value=dueDate}}

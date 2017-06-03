@@ -102,7 +102,13 @@ Meteor.methods({
         }
         return {items: [], total: 0};
     },
-    checkLastDateOfReceiveOrder({saleId}){
-        return  Invoices.findOne({saleId}, {sort: {invoiceDate: -1}})
+    checkLastDateOfReceiveOrder({saleId,selfId}){
+        let selector = {
+            saleId
+        };
+        if(selfId) {
+            selector._id = {$nin: [selfId]};
+        }
+        return  Invoices.findOne(selector, {sort: {invoiceDate: -1}})
     }
 });

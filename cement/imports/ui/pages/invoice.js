@@ -57,8 +57,9 @@ Tracker.autorun(function () {
         Meteor.subscribe('cement.item', {_id: {$in: Session.get('saleOrderItems')}});
     }
     let saleIdQuery = FlowRouter.query.get('saleId');
+    let selfId = FlowRouter.query.get('selfId');
     if (saleIdQuery) {
-        Meteor.call('checkLastDateOfReceiveOrder', {saleId: saleIdQuery}, (err, result) => {
+        Meteor.call('checkLastDateOfReceiveOrder', {saleId: saleIdQuery, selfId}, (err, result) => {
             if (!err) {
                 if (result && result.invoiceDate) {
                     Meteor.setTimeout(function () {
@@ -144,7 +145,7 @@ indexTmpl.events({
             }
         });
         if (this.saleId) {
-            FlowRouter.query.set({saleId: this.saleId});
+            FlowRouter.query.set({saleId: this.saleId, selfId: this._id});
         }
     },
     'click .js-destroy'(event, instance) {

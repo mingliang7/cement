@@ -75,6 +75,18 @@ ReceiveItems.schema = new SimpleSchema({
             }
         }
     },
+    deliveryDate: {
+        type: Date,
+        autoform: {
+            afFieldInput: {
+                type: "bootstrap-datetimepicker",
+                dateTimePickerOptions: {
+                    format: 'DD/MM/YYYY',
+
+                }
+            }
+        }
+    },
     receiveItemDate: {
         type: Date,
         // defaultValue: moment().toDate(),

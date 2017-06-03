@@ -75,6 +75,20 @@ Tracker.autorun(function () {
         }
         Meteor.subscribe('cement.item', {_id: {$in: data}});
     }
+    let id = FlowRouter.query.get('id');
+    let ref = FlowRouter.query.get('ref');
+    let selfId = FlowRouter.query.get('selfId');
+    if (id && ref) {
+        Meteor.call("fetchLastReceiveItems", {id, ref, selfId}, (err, result) => {
+            if (!err) {
+                if (result) {
+                    Meteor.setTimeout(function () {
+                        RangeDate.setMin($('[name="receiveItemDate"]'), result.receiveItemDate);
+                    }, 1000);
+                }
+            }
+        });
+    }
 
 });
 // Declare template
@@ -90,6 +104,7 @@ let indexTmpl = Template.Cement_receiveItem,
     listPurchaseOrder = Template.listPurchaseOrder;
 // Local collection
 import {itemsCollection} from '../../../api/collections/tmpCollection';
+import RangeDate from "../../../api/libs/date";
 
 // Index
 
@@ -122,6 +137,10 @@ indexTmpl.events({
     'click .js-update' (event, instance) {
         itemsCollection.remove({});
         alertify.receiveItem(fa('pencil', TAPi18n.__('cement.receiveItem.title')), renderTemplate(editTmpl, this));
+        let firstLetter = _.lowerCase(this.type.substr(0, 1));
+        let afterFirstLeter = this.type.substr(1, this.type.length);
+        let ref = firstLetter + afterFirstLeter + 'Id';
+        FlowRouter.query.set({id: this[ref], ref, selfId: this._id});
     },
     'click .js-destroy' (event, instance) {
         let data = this;
@@ -141,6 +160,7 @@ indexTmpl.events({
             swal.close();
             alertify.receiveItemShow(fa('eye', TAPi18n.__('cement.invoice.title')), renderTemplate(showTmpl, result)).maximize();
         });
+
     },
     'click .js-receiveItem' (event, instance) {
         let params = {};
@@ -180,9 +200,9 @@ newTmpl.events({
             Session.set('getVendorId', undefined);
             FlowRouter.query.unset();
         }
-        if(event.currentTarget.value != '') {
+        if (event.currentTarget.value != '') {
             instance.customerId.set(event.currentTarget.value);
-        }else{
+        } else {
             instance.customerId.set(undefined);
         }
         Session.set('totalOrder', undefined);
@@ -312,7 +332,7 @@ newTmpl.helpers({
 });
 
 newTmpl.onDestroyed(function () {
-     ;
+    ;
     // Remove items collection
     itemsCollection.remove({});
     Session.set('vendorInfo', undefined);
@@ -532,7 +552,7 @@ showTmpl.events({
 let hooksObject = {
     before: {
         insert: function (doc) {
-             ;
+            ;
             let items = [];
             itemsCollection.find().forEach((obj) => {
                 delete obj._id;
@@ -749,7 +769,7 @@ function excuteEditForm(doc) {
 }
 
 
-function receiveTypeFn({customerId,receiveType, vendor}) {
+function receiveTypeFn({customerId, receiveType, vendor}) {
     let label = '';
     if (receiveType == 'PrepaidOrder') {
         label = 'Prepaid Order';

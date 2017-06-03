@@ -58,6 +58,7 @@ purchaseOrderTmpl.events({
         let tmpCollection = itemsCollection.find().fetch();
         if (remainQty != '' && remainQty != '0') {
             if (this.remainQty > 0) {
+                FlowRouter.query.set({id: purchaseOrderId, ref: 'purchaseOrderId'});
                 if (tmpCollection.length > 0) {
                     let purchaseOrderIdExist = _.find(tmpCollection, function (o) {
                         return o.purchaseOrderId == purchaseOrderId;
@@ -97,6 +98,7 @@ purchaseOrderTmpl.events({
         let tmpCollection = itemsCollection.find().fetch();
         if (remainQty != '' && remainQty != '0') {
             if (this.remainQty > 0) {
+                FlowRouter.query.set({id: purchaseOrderId, ref: 'purchaseOrderId'});
                 if (parseFloat(remainQty) > this.remainQty) {
                     remainQty = this.remainQty;
                     $(event.currentTarget).val(this.remainQty);
