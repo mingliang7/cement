@@ -126,20 +126,52 @@ ChartAccount.after.update(function (userId, doc, fieldNames, modifier, options) 
             account: doc.code + " | " + doc.name,
         }
     }, {multi: true});
+
+
     //CloseChartAccount
-    CloseChartAccount.direct.update({closeChartAccountId: doc._id}, {
-        $set: {
+    let setObjCloseChartAccount = {};
+    if (doc.parentId != undefined) {
+        setObjCloseChartAccount = {
             accountTypeId: doc.accountTypeId,
+            code: doc.code,
             name: doc.name,
+            parentId: doc.parentId,
+            level: doc.level
         }
+    } else {
+        setObjCloseChartAccount = {
+            accountTypeId: doc.accountTypeId,
+            code: doc.code,
+            name: doc.name
+        }
+    }
+
+    CloseChartAccount.direct.update({closeChartAccountId: doc._id}, {
+        $set: setObjCloseChartAccount
     }, {multi: true});
 
     //CloseChartAccountPerMonth
-    CloseChartAccountPerMonth.direct.update({closeChartAccountId: doc._id}, {
-        $set: {
+
+    let setObjCloseChartAccountPerMonth = {};
+    if (doc.parentId != undefined) {
+        setObjCloseChartAccountPerMonth = {
             accountTypeId: doc.accountTypeId,
+            code: doc.code,
             name: doc.name,
+            parentId: doc.parentId,
+            level: doc.level
         }
+
+    } else {
+        setObjCloseChartAccountPerMonth = {
+            accountTypeId: doc.accountTypeId,
+            code: doc.code,
+            name: doc.name
+        }
+    }
+
+    CloseChartAccountPerMonth.direct.update({closeChartAccountId: doc._id}, {
+        $set: setObjCloseChartAccountPerMonth
     }, {multi: true});
 
 
