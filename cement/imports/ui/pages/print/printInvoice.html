@@ -88,10 +88,10 @@
                                         {{item.itemName}}
                                         {{#if existUnitConvert item.unitConvertDoc}}
                                             &nbsp;&nbsp;{{numFormat item.originalQty '0,0.00'}}{{{item.itemDoc.name}}}
-                                            {{numFormat item.unitConvertDoc.convertAmount '0,0.00'}}{{item.unitConvertDoc._unit.name}}
+                                            {{numFormat item.unitConvertDoc.convertAmount '0,0.0000'}}{{item.unitConvertDoc._unit.name}}
                                         {{/if}}
                                     </td>
-                                    <td align="right">{{numFormat item.qty '0,0.00'}}{{item.itemDoc._unit.name}}</td>
+                                    <td align="right">{{numFormat item.qty '0,0.0000'}}{{item.itemDoc._unit.name}}</td>
                                     {{#if invoiceTypeSaleOrder sale.invoiceType}}
                                         <td align="right">{{lookupRemainQty sale item.itemId
                                                                             item.itemDoc._unit.name}}</td>
