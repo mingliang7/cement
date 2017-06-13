@@ -838,7 +838,6 @@ var disableDate = function () {
 
     },
     disableDateUpdate = function (id) {
-        debugger;
         var selectorGetLastDate = {};
         var selectorGetLastDateStart = {};
         var branchId = Session.get("currentBranch");

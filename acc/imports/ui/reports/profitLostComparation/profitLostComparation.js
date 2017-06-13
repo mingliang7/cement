@@ -62,7 +62,6 @@ reportTpl.onCreated(function () {
     createNewAlertify('acc_profitLostComparation');
     this.autorun(() => {
 
-        debugger;
         // Check form data
         if (formDataState.get()) {
             rptInitState.set(true);

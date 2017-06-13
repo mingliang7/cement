@@ -45,8 +45,6 @@ var reportTpl = Template.acc_transactionDetailReport,
     tmplPrintData = Template.acc_transactionDetailReportPrintData;
 
 
-
-
 //===================================Run
 
 // Form state
@@ -58,7 +56,6 @@ let rptInitState = new ReactiveVar(false);
 let rptDataState = new ReactiveVar(null);
 
 
-
 reportTpl.helpers({
     schema() {
         return TransactionDetailReport;
@@ -66,18 +63,20 @@ reportTpl.helpers({
     param(){
         let param = FlowRouter.current().query;
 
-        Session.set('accountTypeIdSession', param.accountType);
-        if (!(param.accountType instanceof Array)) {
-
-            Session.set('accountTypeIdSession', param.accountType.split(','));
-            param.accountType =param.accountType.split(',');
-
-        } else {
+        if (param.accountType != undefined) {
             Session.set('accountTypeIdSession', param.accountType);
-        }
+            if (!(param.accountType instanceof Array)) {
 
-        formDataState.set(param);
-        return param;
+                Session.set('accountTypeIdSession', param.accountType.split(','));
+                param.accountType = param.accountType.split(',');
+
+            } else {
+                Session.set('accountTypeIdSession', param.accountType);
+            }
+
+            formDataState.set(param);
+            return param;
+        }
     }
 })
 
@@ -182,7 +181,6 @@ reportTpl.events({
         formDataState.set(result);
     },
     'change [name="accountType"]': function (e) {
-        debugger;
         Session.set('accountTypeIdSession', $(e.currentTarget).val());
     },
     'click .fullScreen'(event, instance){

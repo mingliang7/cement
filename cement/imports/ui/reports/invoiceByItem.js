@@ -113,15 +113,15 @@ invoiceDataTmpl.events({
     'click .print'(event, instance){
         $('#to-print').printThis();
     },
-    'click .inv'(event,instance){
+    'click .inv'(event, instance){
         let currentBranch = Session.get('currentBranch');
         let _id = event.currentTarget.text.trim();
         let currentInvoiceId = `${currentBranch}-20${_id}`;
         Meteor.call('getInvoice', {_id: currentInvoiceId}, function (err, result) {
-            if(result) {
-                if(result.status != 'closed') {
+            if (result) {
+                if (result.status != 'closed') {
                     alertify.invoiceEdit(fa('', 'Invoice Edit'), renderTemplate(Template.Cement_invoiceEdit, result)).maximize();
-                }else{
+                } else {
                     alertify.invoiceEdit(fa('', 'Invoice Edit'), renderTemplate(Template.Cement_invoiceShow, result)).maximize();
 
                 }
@@ -209,6 +209,9 @@ AutoForm.hooks({
             params.branchId = Session.get('currentBranch');
             if (enableSaleOrder.get()) {
                 params.so = true;
+            }
+            if (doc.itemId) {
+                params.items = doc.itemId.join(',');
             }
             if (doc.fromDate && doc.toDate) {
                 let fromDate = moment(doc.fromDate).startOf('days').format('YYYY-MM-DD HH:mm:ss');

@@ -93,6 +93,7 @@ Meteor.methods({
                     _id: 1,
                     boid: 1,
                     invoiceDate: 1,
+                    deliveryDate: 1,
                     voucherId: 1,
                     dueDate: 1,
                     shipTo: 1,
@@ -128,6 +129,9 @@ Meteor.methods({
                 $group: {
                     _id: '$_id',
                     voucherId: {$last: '$voucherId'},
+                    deliveryDate: {
+                        $last: '$deliveryDate'
+                    },
                     saleDate: {
                         $last: '$invoiceDate'
                     },
@@ -169,6 +173,7 @@ Meteor.methods({
                         boid: '$boid',
                         truckDoc: '$truckDoc',
                         saleDate: '$saleDate',
+                        deliveryDate: '$deliveryDate',
                         dueDate: '$dueDate',
                         stockLocationDoc: '$stockLocationDoc',
                         total: '$total',

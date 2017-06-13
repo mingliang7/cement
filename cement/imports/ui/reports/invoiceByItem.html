@@ -11,33 +11,37 @@
                 <div class="panel-body">
                     <div class="container-fluid">
                         <div class="inbox-head report-header">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <select class="form-control" id="date-range-filter">
-                                        <option value="today">ថ្ងៃនេះ(Today)</option>
-                                        <option value="yesterday">ម្សិលមិញ(Yesterday)</option>
-                                        <option value="last7days">៧ ថ្ងៃមុន(Last 7days)</option>
-                                        <option value="last30days">៣០ ថ្ងៃមុន(Last 30days)</option>
-                                        <option value="thisMonth">ខែនេះ(This Month)</option>
-                                        <option value="lastMonth">ខែមុន(Last Month)</option>
-                                    </select>
-                                </div>
-                            </div>
                             {{#autoForm schema=schema id='invoiceByItem'}}
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <!--<div class="col-md-2">-->
+                                        <!--<label for="">&nbsp;</label>-->
+                                        <!--<select class="form-control" id="date-range-filter">-->
+                                            <!--<option value="today">ថ្ងៃនេះ(Today)</option>-->
+                                            <!--<option value="yesterday">ម្សិលមិញ(Yesterday)</option>-->
+                                            <!--<option value="last7days">៧ ថ្ងៃមុន(Last 7days)</option>-->
+                                            <!--<option value="last30days">៣០ ថ្ងៃមុន(Last 30days)</option>-->
+                                            <!--<option value="thisMonth">ខែនេះ(This Month)</option>-->
+                                            <!--<option value="lastMonth">ខែមុន(Last Month)</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                    <div class="col-md-2">
                                         {{> afQuickField name="fromDate" label= 'From Date' value=fromDate}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         {{> afQuickField name="toDate" label='To Date' value=endDate}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         {{> afQuickField name="customer" label="Customer"}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         {{> afQuickField name="branchId" label="Branch"}}
                                     </div>
 
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        {{> afQuickField name="itemId" label="Items"}}
+                                    </div>
                                 </div>
                                 <input type="checkbox" class="show-items-summary" checked>SHOW ITEMS SUMMARY
                                 <input type="checkbox" class="show-invoices-summary" checked>SHOW INV SUMMARY

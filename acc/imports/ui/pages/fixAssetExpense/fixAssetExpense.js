@@ -65,7 +65,6 @@ fixAssetExpenseTpl.events({
             fixAssetExpenseInsertTpl));
     },
     'click .remove': function (e, t) {
-        debugger;
         let self = this;
         let id = this._id;
         Meteor.call('getLastFixAssetExpense', Session.get("currentBranch"), id, function (err, result) {

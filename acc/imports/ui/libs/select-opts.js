@@ -216,7 +216,34 @@ export const SelectOpts = {
                 })
             });
         return list;
-    }, chartAccountAsset: function () {
+    }, chartAccountIntegrate: function () {
+        var list = [];
+        let selector = {};
+
+        let result = MapUserAndAccount.findOne({userId: Meteor.user()._id});
+
+        if (result != null) {
+            let accountIdList = [];
+            result.transaction.forEach(function (obj) {
+                accountIdList.push(obj.accountDoc._id);
+            })
+
+            selector._id = {$in: accountIdList};
+        } else {
+            list.push({label: "(Select One)", value: ""});
+        }
+
+        ChartAccount.find(selector, {sort: {code: 1}})
+            .forEach(function (obj) {
+                list.push({
+                    label: Spacebars.SafeString(SpaceChar.space(obj.level * 6) + obj.code).string + " | " + obj.name,
+                    value: obj.code + " | " + obj.name
+                })
+            });
+        return list;
+    },
+
+    chartAccountAsset: function () {
         var list = [{label: "(Select One)", value: ""}];
         ChartAccount.find({accountTypeId: {$in: ['10', '11', '12']}}, {sort: {code: 1}})
             .forEach(function (obj) {

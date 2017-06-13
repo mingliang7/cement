@@ -143,7 +143,6 @@ reportTpl.onDestroyed(function () {
 // hook
 let hooksObject = {
     onSubmit: function (insertDoc, updateDoc, currentDoc) {
-        debugger;
         this.event.preventDefault();
         formDataState.set(null);
 

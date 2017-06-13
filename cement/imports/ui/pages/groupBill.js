@@ -74,8 +74,13 @@ indexTmpl.events({
             confirmButtonText: "Yes, delete it!",
             closeOnConfirm: false
         }).then(function () {
-            Meteor.call('removeGroupBill', {doc});
-            swal("Deleted!", `វិក័យប័ត្របង់ប្រាក់លេខ ${doc._id} បានលុបដោយជោគជ័យ`, "success");
+            Meteor.call('removeGroupBill', {doc}, function (err, result) {
+                if (!err) {
+                    swal("Deleted!", `វិក័យប័ត្របង់ប្រាក់លេខ ${doc._id} បានលុបដោយជោគជ័យ`, "success");
+                } else {
+                    swal("Warning!", err.message, "error");
+                }
+            });
         });
     },
     'click .js-display' (event, instance) {
@@ -99,7 +104,7 @@ editTmpl.helpers({
 
 // Show
 showTmpl.events({
-    'click .print-group-invoice'(event,instance){
+    'click .print-group-invoice'(event, instance){
         $('#to-print').printThis();
     }
 });

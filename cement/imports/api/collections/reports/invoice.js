@@ -102,5 +102,24 @@ export const invoiceSchema = new SimpleSchema({
         autoform: {
             type: 'boolean-select'
         }
+    },
+    itemId: {
+        type: [String],
+        label: 'Item',
+        optional: true,
+        autoform: {
+            type: 'universe-select',
+            afFieldInput: {
+                create: true,
+                multiple: true,
+                uniPlaceholder: 'Select One',
+                optionsMethod: 'cement.selectOptMethods.item',
+                optionsMethodParams: function () {
+                    if (Meteor.isClient) {
+                        return {scheme: {$exists: false}};
+                    }
+                }
+            }
+        }
     }
 });

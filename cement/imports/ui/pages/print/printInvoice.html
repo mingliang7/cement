@@ -41,7 +41,7 @@
                                 <td><b>ទូរស័ព្ទ/Tel</b></td>
                                 <td>: {{sale._customer.telephone}}</td>
                                 <td><b>កាលបរិច្ឆេទ/Date</b></td>
-                                <td>: {{moFormat sale.saleDate 'DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>: {{moFormat sale.saleDate 'DD/MM/YYYY HH:mm'}}</td>
                             </tr>
                             <tr>
                                 <td><b>លេខប័ណ្ណបញ្ចេញឃ្លាំង:</b></td>
@@ -53,17 +53,19 @@
                                 <td><b>លេខឡាន/Truck Num</b></td>
                                 <td>: {{sale.truckDoc.number}}</td>
                                 <td><b>ថ្ងៃផុតកំណត់/Due Date</b></td>
-                                <td>: {{moFormat sale.dueDate 'DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>: {{moFormat sale.dueDate 'DD/MM/YYYY HH:mm'}}</td>
                             </tr>
                             <tr>
                                 <td><b>ឃ្លាំង:</b></td>
                                 <td>: {{sale.stockLocationDoc.name}}</td>
-                                <td><b>ទៅអាស័យដ្ឋាន/To Address</b></td>
-                                <td colspan="3">: {{{sale.shipTo}}}</td>
+                                <td><b>ថ្ងៃផ្តល់ជូន/Delivery Date:</b></td>
+                                <td>: {{moFormat sale.deliveryDate 'DD/MM/YYYY'}} {{moFormat sale.saleDate 'HH:mm'}}</td>
                             </tr>
                             <tr>
                                 <td><b>អាស័យដ្ឋាន/Address</b></td>
-                                <td colspan="3">: {{sale._customer.address}}</td>
+                                <td>: {{sale._customer.address}}</td>
+                                <td><b>ទៅអាស័យដ្ឋាន/To Address</b></td>
+                                <td>: {{{sale.shipTo}}}</td>
                             </tr>
                         </table>
                         <div style="height: 7px;"></div>

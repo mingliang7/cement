@@ -37,6 +37,7 @@ export const invoiceByItemReport = new ValidatedMethod({
                 };
                 selector = ReportFn.checkIfUserHasRights({currentUser: Meteor.userId(), selector});
             }
+            let itemSelector = {$nin: []};
             let exchange = Exchange.findOne({}, {sort: {_id: -1}});
             let coefficient = exchangeCoefficient({exchange, fieldToCalculate: {$sum: ["$items.amount"]}})
 
@@ -57,6 +58,9 @@ export const invoiceByItemReport = new ValidatedMethod({
             }
             if (params.customer && params.customer != '') {
                 selector.customerId = params.customer;
+            }
+            if (params.items) {
+                itemSelector = {$in: params.items.split(',')};
             }
             data.fields = [
                 {field: '<th>Date</th>'},
@@ -94,6 +98,11 @@ export const invoiceByItemReport = new ValidatedMethod({
                     $match: selector
                 },
                 {$unwind: {path: '$items', preserveNullAndEmptyArrays: true}},
+                {
+                    $match: {
+                        'items.itemId': itemSelector
+                    }
+                },
                 {
                     $lookup: {
                         from: "cement_item",
@@ -167,7 +176,7 @@ export const invoiceByItemReport = new ValidatedMethod({
                         totalQty: {$sum: '$totalQty'},
                         totalTsFeeAmount: {$sum: '$tsFeeAmount'},
                         totalSubAmount: {$sum: '$subAmount'},
-                        total: {$sum:{$add: ['$tsFeeAmount', '$subAmount']}},
+                        total: {$sum: {$add: ['$tsFeeAmount', '$subAmount']}},
                     }
                 }
 
@@ -178,6 +187,9 @@ export const invoiceByItemReport = new ValidatedMethod({
                 },
                 {
                     $unwind: {path: '$items', preserveNullAndEmptyArrays: true}
+                },
+                {
+                    $match: {'items.itemId': itemSelector}
                 },
                 {
                     $lookup: {
@@ -213,16 +225,16 @@ export const invoiceByItemReport = new ValidatedMethod({
                     }
                 },
                 {
-                  $project: {
-                      _id: 1,
-                      itemName: 1,
-                      qty: 1,
-                      subAmount: 1,
-                      tsFeeAmount: 1,
-                      amount: 1,
-                      tsFee: {$divide: ["$tsFeeAmount", "$qty"]},
-                      price: {$divide: ["$subAmount", "$qty"]}
-                  }
+                    $project: {
+                        _id: 1,
+                        itemName: 1,
+                        qty: 1,
+                        subAmount: 1,
+                        tsFeeAmount: 1,
+                        amount: 1,
+                        tsFee: {$divide: ["$tsFeeAmount", "$qty"]},
+                        price: {$divide: ["$subAmount", "$qty"]}
+                    }
                 },
                 {$unwind: {path: '$itemName', preserveNullAndEmptyArrays: true}},
                 {$sort: {itemName: 1}}

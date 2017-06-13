@@ -13,7 +13,7 @@ AccountMapping.schema = new SimpleSchema({
             type: "select2",
             placeholder: "Chart Of Account",
             options: function () {
-                return SelectOpts.chartAccount();
+                return SelectOpts.chartAccountIntegrate();
             }
         }
 

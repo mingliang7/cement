@@ -9,7 +9,8 @@
                                     class="font-head-panel-en">Form</span></h3>
 
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
                             </button>
                         </div>
                     </div>
@@ -99,7 +100,7 @@
                     <tr>
                         <th width="40px">No</th>
                         <th>Date</th>
-                        <th>Invoice</th>
+                        <th>Number</th>
                         <th>Name</th>
                         <th>Memo</th>
                         <!--<th>Split Account</th>-->
@@ -155,10 +156,10 @@
                                         {{cusAndVenname}}
                                     </td>
                                     <td align="left">
-                                        {{memo}}
+                                        {{{memo}}}
                                     </td>
                                     <!--<td align="left" class="report-pointer">-->
-                                        <!--<span class="split-account-detail" style="cursor: pointer">{{name}}</span>-->
+                                    <!--<span class="split-account-detail" style="cursor: pointer">{{name}}</span>-->
                                     <!--</td>-->
                                     <td style="text-align: right">
                                         {{getCurrency currencyId}}{{formatMoneyNormal dr}}

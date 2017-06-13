@@ -3,14 +3,12 @@ import {idGenerator} from 'meteor/theara:id-generator';
 import {round2} from 'meteor/theara:round2';
 
 
-
 // Collection
 import {Journal} from '../../imports/api/collections/journal';
 import {ConfigDep} from '../../imports/api/collections/configDep';
 import {ChartAccount} from '../../imports/api/collections/chartAccount';
 import {DepExpList} from '../../imports/api/collections/depExpList';
 import {FixAssetDep} from '../../imports/api/collections/fixAssetDep';
-
 
 
 Journal.before.insert(function (userId, doc) {
@@ -37,7 +35,7 @@ Journal.before.insert(function (userId, doc) {
     var date = moment(doc.journalDate, "DD/MM/YYYY").format("YYMM");
     var prefix = doc.branchId + "-" + date;
 
-    doc._id = doc.idGiven != undefined ? doc.idGiven : idGenerator.genWithPrefix(Journal, prefix, 6);
+    doc._id = idGenerator.genWithPrefix(Journal, prefix, 6);
 
     doc.splitAccount = lenArray > 2 ? doc._id : 0;
 

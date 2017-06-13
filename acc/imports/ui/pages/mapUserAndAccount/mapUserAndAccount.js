@@ -53,7 +53,6 @@ indexTpl.onRendered(function () {
 
 indexTpl.events({
     'click .insert': function (e, t) {
-        debugger;
         alertify.mapUserAndAccount(fa("plus", "Map User and Account"), renderTemplate(insertTpl));
 
     }, 'click .update': function (e, t) {
@@ -138,7 +137,6 @@ AutoForm.hooks({
     acc_mapUserAndAccountUpdate: {
         before: {
             update: function (doc) {
-                debugger;
 
                 doc.$set.branchId = Session.get("currentBranch");
                 let transactionData = mapAccountDetailCollection.find().fetch();
