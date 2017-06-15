@@ -42,9 +42,9 @@ export const receivePaymentReport = new ValidatedMethod({
             }
             selector.branchId = params.branchId;
             if (params.date) {
-                let dateAsArray = params.date.split(',')
-                let fromDate = moment(dateAsArray[0]).toDate();
-                let toDate = moment(dateAsArray[1]).toDate();
+                let dateAsArray = params.date.split(',');
+                let fromDate = moment(dateAsArray[0]).startOf('days').toDate();
+                let toDate = moment(dateAsArray[1]).endOf('days').toDate();
                 data.title.date = moment(fromDate).format('DD/MM/YYYY') + ' - ' + moment(toDate).format('DD/MM/YYYY');
                 selector.paymentDate = {$gte: fromDate, $lte: toDate};
             }
