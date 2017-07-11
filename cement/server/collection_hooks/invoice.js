@@ -906,7 +906,7 @@ function invoiceManageStock(invoice) {
             totalCost += item.amountCost;
             newItems.push(item);
             let newInventory = {
-                _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+              //  _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
                 branchId: invoice.branchId,
                 stockLocationId: invoice.stockLocationId,
                 itemId: item.itemId,

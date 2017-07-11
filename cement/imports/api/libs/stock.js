@@ -19,7 +19,7 @@ export  default class StockFunction {
             let lastAmount = inventory.lastAmount + (item.qty * item.price);
             let averagePrice = lastAmount / totalQty;
             let nextInventory = {};
-            nextInventory._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
+           // nextInventory._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
             nextInventory.branchId = branchId;
             nextInventory.stockLocationId = stockLocationId;
             nextInventory.itemId = item.itemId;
@@ -43,7 +43,7 @@ export  default class StockFunction {
             let lastAmount = item.qty * item.price;
             let averagePrice = lastAmount / totalQty;
             let inventoryObj = {};
-            inventoryObj._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
+            //inventoryObj._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
             inventoryObj.branchId = branchId;
             inventoryObj.stockLocationId = stockLocationId;
             inventoryObj.itemId = item.itemId;
@@ -84,7 +84,7 @@ export  default class StockFunction {
             let lastAmount = inventory.lastAmount + (item.qty * item.price);
             let averagePrice = lastAmount / totalQty;
             let nextInventory = {};
-            nextInventory._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
+            //nextInventory._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
             nextInventory.branchId = branchId;
             nextInventory.stockLocationId = stockLocationId;
             nextInventory.itemId = item.itemId;
@@ -108,7 +108,7 @@ export  default class StockFunction {
             let lastAmount = item.qty * item.price;
             let averagePrice = lastAmount / totalQty;
             let inventoryObj = {};
-            inventoryObj._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
+           // inventoryObj._id = idGenerator.genWithPrefix(AverageInventories, prefix, 13);
             inventoryObj.branchId = branchId;
             inventoryObj.stockLocationId = stockLocationId;
             inventoryObj.itemId = item.itemId;
@@ -150,7 +150,7 @@ export  default class StockFunction {
                 averagePrice = lastAmount / totalQty;
             }
             let newInventory = {
-                _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+              //  _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
                 branchId: branchId,
                 stockLocationId: stockLocationId,
                 itemId: item.itemId,
@@ -194,7 +194,7 @@ export  default class StockFunction {
                 averagePrice = lastAmount / remainQty;
             }
             let newInventory = {
-                _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+               // _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
                 branchId: branchId,
                 stockLocationId: stockLocationId,
                 itemId: item.itemId,
@@ -218,7 +218,7 @@ export  default class StockFunction {
             throw new Meteor.Error('Not Found Inventory. @' + type + " refId:" + refId);
             /* let thisItem = Item.findOne(item.itemId);
              let newInventory = {
-             _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+             //_id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
              branchId: branchId,
              stockLocationId: stockLocationId,
              itemId: item.itemId,
@@ -254,7 +254,7 @@ export  default class StockFunction {
                 averagePrice = lastAmount / remainQty;
             }
             let newInventory = {
-                _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+               // _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
                 branchId: branchId,
                 stockLocationId: stockLocationId,
                 itemId: item.itemId,
@@ -279,7 +279,7 @@ export  default class StockFunction {
             throw new Meteor.Error('Not Found Inventory. @' + type + " refId:" + refId);
             /* let thisItem = Item.findOne(item.itemId);
              let newInventory = {
-             _id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
+             //_id: idGenerator.genWithPrefix(AverageInventories, prefix, 13),
              branchId: branchId,
              stockLocationId: stockLocationId,
              itemId: item.itemId,
